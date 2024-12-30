@@ -1,10 +1,10 @@
 // Shared animation configuration
 export const ANIMATION_CONFIG = {
-  duration: 1000,
+  duration: 600, // Reduced duration for snappier transitions
   staggerDelay: 100,
-  easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Spring-like easing
-  smoothEasing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-  springEasing: 'cubic-bezier(0.23, 1, 0.32, 1)' // Improved spring effect
+  easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)', // Ease-out-cubic for smoother transitions
+  smoothEasing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', // Ease-in-out for smooth start and end
+  springEasing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' // Improved spring effect
 };
 
 // Common animation states

@@ -1,50 +1,64 @@
 import { ANIMATION_CONFIG, STATES } from './config.js';
 
+const SECTION_ANIMATION_CONFIG = {
+  duration: 1000,
+  staggerDelay: 80,
+  easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)', // Smooth easing
+};
+
+const SECTION_STATES = {
+  hidden: {
+    opacity: '0',
+    transform: 'translateY(0) scale(0.98)',
+    filter: 'blur(3px)',
+  },
+  visible: {
+    opacity: '1',
+    transform: 'translateY(0) scale(1)',
+    filter: 'blur(0)',
+  },
+};
+
 export function animateSection(section, direction, offset) {
   const isEntering = offset === 0;
-  const duration = ANIMATION_CONFIG.duration;
+  const duration = SECTION_ANIMATION_CONFIG.duration;
+  const delay = 0; // No stagger delay for sections
   
   // Base transition for all states
   const baseTransition = `
-    transform ${duration}ms ${ANIMATION_CONFIG.springEasing},
-    opacity ${duration}ms cubic-bezier(0.4, 0, 0.2, 1),
-    filter ${duration}ms ${ANIMATION_CONFIG.smoothEasing}
+    opacity ${duration}ms ${SECTION_ANIMATION_CONFIG.easing},
+    transform ${duration}ms ${SECTION_ANIMATION_CONFIG.easing},
+    filter ${duration}ms ${SECTION_ANIMATION_CONFIG.easing}
   `;
 
   if (isEntering) {
     section.style.transition = baseTransition;
+    section.style.transitionDelay = `${delay}ms`;
     section.classList.add('active');
     
     requestAnimationFrame(() => {
-      section.style.opacity = '1';
-      section.style.transform = 'translateX(0%) translateY(0) scale(1)';
-      section.style.filter = 'blur(0)';
+      Object.assign(section.style, SECTION_STATES.visible);
       
       // Animate content with delay
       const content = section.querySelector('.content');
       if (content) {
         content.style.transition = baseTransition;
         content.style.transitionDelay = '150ms';
-        content.style.opacity = '1';
-        content.style.transform = 'translateY(0) scale(1)';
-        content.style.filter = 'blur(0)';
+        Object.assign(content.style, SECTION_STATES.visible);
       }
     });
   } else {
     section.style.transition = baseTransition;
+    section.style.transitionDelay = `${delay}ms`;
     section.classList.remove('active');
     
     requestAnimationFrame(() => {
-      section.style.opacity = '0';
-      section.style.transform = `translateX(${offset}%) translateY(30px) scale(0.95)`;
-      section.style.filter = 'blur(8px)';
+      Object.assign(section.style, SECTION_STATES.hidden);
       
       const content = section.querySelector('.content');
       if (content) {
         content.style.transition = baseTransition;
-        content.style.opacity = '0';
-        content.style.transform = 'translateY(30px) scale(0.95)';
-        content.style.filter = 'blur(8px)';
+        Object.assign(content.style, SECTION_STATES.hidden);
       }
     });
   }
